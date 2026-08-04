@@ -1,0 +1,8 @@
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+__pycache__/
+*.pyc
+node_modules/

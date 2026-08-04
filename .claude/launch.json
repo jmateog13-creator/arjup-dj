@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "arjup-dj",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["serve_nocache.py", "8151"],
+      "port": 8151
+    }
+  ]
+}

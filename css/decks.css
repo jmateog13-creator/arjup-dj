@@ -1,0 +1,397 @@
+/* AULATECH DJ · decks.css — DeckPane, JogWheel, FXPane, SamplerPane
+   Owner: UI-DECKS. Tema: variables de app.css (§8). */
+
+/* ─── Deck pane ─────────────────────────────────────────────── */
+
+.deck-pane {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto auto auto;
+  gap: 6px;
+  padding: 10px;
+  min-height: 0;
+}
+
+.deck-info {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "title time" "meta time";
+  align-items: center;
+  gap: 0 8px;
+}
+.deck-title {
+  grid-area: title;
+  font: 700 14px/1.2 -apple-system, "SF Pro Display", sans-serif;
+  color: var(--text, #e8ecf4);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.deck-meta {
+  grid-area: meta;
+  font: 500 11px/1.3 -apple-system, sans-serif;
+  color: var(--text-dim, #8b93a5);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.deck-time {
+  grid-area: time;
+  font: 700 12px/1.2 "SF Mono", ui-monospace, monospace;
+  color: var(--accent, #ffb340);
+  white-space: nowrap;
+}
+
+.deck-overview {
+  width: 100%; height: 34px;
+  border-radius: 6px;
+  background: var(--panel-2, #1c212c);
+  cursor: pointer;
+}
+
+/* ─── Fila central: jog + pitch ─────────────────────────────── */
+
+.deck-mid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 56px;
+  gap: 8px;
+  min-height: 0;
+}
+.deck-jog-wrap {
+  display: grid; place-items: center;
+  min-height: 0;
+}
+.deck-jog {
+  width: min(100%, 26vh);
+  aspect-ratio: 1;
+  touch-action: none;
+  cursor: grab;
+}
+.deck-jog:active { cursor: grabbing; }
+
+.deck-pitch-wrap {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  justify-items: center;
+  gap: 4px;
+  padding: 4px 0;
+}
+.deck-pitch-led {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--panel-3, #232a38);
+  transition: background .15s, box-shadow .15s;
+}
+.deck-pitch-led.match {
+  background: #38e07a;
+  box-shadow: 0 0 10px rgba(56, 224, 122, .8);
+}
+.deck-pitch-track {
+  position: relative;
+  width: 8px; min-height: 60px; height: 100%;
+  border-radius: 4px;
+  background: var(--panel-2, #1c212c);
+  touch-action: none;
+  cursor: ns-resize;
+}
+.deck-pitch-zero {
+  position: absolute; top: 50%; left: -4px; right: -4px;
+  height: 1px; background: rgba(255,255,255,.25);
+}
+.deck-pitch-handle {
+  position: absolute; left: -8px;
+  width: 24px; height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #39404f, #232a38);
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 2px 6px rgba(0,0,0,.5);
+  transition: box-shadow .1s;
+}
+.deck-pitch-track:hover .deck-pitch-handle { box-shadow: 0 0 8px var(--accent-dim, rgba(255,179,64,.18)); }
+.deck-pitch-value {
+  font: 700 10px/1 "SF Mono", ui-monospace, monospace;
+  color: var(--text, #e8ecf4);
+}
+.deck-pitch-cap {
+  font: 700 8px/1 -apple-system, sans-serif;
+  letter-spacing: .14em;
+  color: var(--text-dim, #8b93a5);
+}
+
+/* KEYLOCK (v2) — master tempo */
+.deck-keylock-btn {
+  margin-top: 6px;
+  appearance: none; cursor: pointer;
+  padding: 4px 7px; border-radius: 6px;
+  border: 1px solid var(--border-hi, rgba(255,255,255,.14));
+  background: var(--panel-3, #232a38);
+  color: var(--text-dim, #8b93a5);
+  font: 800 8px/1 -apple-system, sans-serif; letter-spacing: .1em;
+  transition: background .12s, color .12s, border-color .12s, box-shadow .15s;
+}
+.deck-keylock-btn:hover:not(:disabled) { color: var(--text, #e8ecf4); }
+.deck-keylock-btn.active {
+  color: #0d0f14; background: var(--accent, #ffb340);
+  border-color: var(--accent, #ffb340);
+  box-shadow: 0 0 10px var(--accent-dim, rgba(255,179,64,.35));
+}
+.deck-keylock-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ─── Transporte ────────────────────────────────────────────── */
+
+.deck-transport {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  gap: 6px;
+}
+.deck-btn-wrap { display: contents; }
+.deck-transport .deck-btn-wrap { display: block; }
+
+.deck-btn {
+  width: 100%;
+  padding: 9px 0;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  background: var(--panel-2, #1c212c);
+  color: var(--text, #e8ecf4);
+  font: 700 12px/1 -apple-system, sans-serif;
+  letter-spacing: .08em;
+  cursor: pointer;
+  transition: transform .05s, background .1s, box-shadow .1s, color .1s;
+}
+.deck-btn:active { transform: scale(.96); }
+
+.deck-btn-play.active {
+  background: #38e07a; color: #0d0f14; border-color: #38e07a;
+  box-shadow: 0 0 14px rgba(56, 224, 122, .5);
+}
+.deck-btn-cue:active,
+.deck-btn-cue:hover { color: var(--accent, #ffb340); border-color: var(--accent, #ffb340); }
+.deck-btn-sync:hover { border-color: var(--deck-a, #38aaff); }
+.deck-btn-sync:active {
+  background: var(--deck-a, #38aaff); color: #0d0f14;
+}
+
+/* ─── Hot cues ──────────────────────────────────────────────── */
+
+.deck-hotcues {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.deck-hotcue {
+  width: 100%;
+  padding: 8px 0;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 7px;
+  background: var(--panel-2, #1c212c);
+  color: var(--text-dim, #8b93a5);
+  font: 700 12px/1 -apple-system, sans-serif;
+  cursor: pointer;
+  transition: transform .05s, background .1s, color .1s, box-shadow .1s;
+}
+.deck-hotcue:active { transform: scale(.94); }
+.deck-hotcue.set {
+  color: #0d0f14;
+  background: var(--accent, #ffb340);
+  border-color: var(--accent, #ffb340);
+  box-shadow: 0 0 10px var(--accent-dim, rgba(255,179,64,.18));
+}
+.deck[data-deck="a"] .deck-hotcue.set { background: var(--deck-a); border-color: var(--deck-a); box-shadow: 0 0 10px var(--deck-a-dim); }
+.deck[data-deck="b"] .deck-hotcue.set { background: var(--deck-b); border-color: var(--deck-b); box-shadow: 0 0 10px var(--deck-b-dim); }
+
+/* ─── Loops ─────────────────────────────────────────────────── */
+
+.deck-loops {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+}
+.deck-loop-btn {
+  width: 100%;
+  padding: 6px 0;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 6px;
+  background: var(--panel-2, #1c212c);
+  color: var(--text-dim, #8b93a5);
+  font: 700 11px/1 -apple-system, sans-serif;
+  cursor: pointer;
+  transition: transform .05s, background .1s, color .1s;
+}
+.deck-loop-btn:active { transform: scale(.94); }
+.deck-loop-btn.active {
+  background: #7dffa8; border-color: #7dffa8; color: #0d0f14;
+  box-shadow: 0 0 10px rgba(125,255,168,.4);
+}
+.deck-loop-exit.armed { color: #ff4433; border-color: rgba(255,68,51,.5); }
+
+/* ─── FX pane ───────────────────────────────────────────────── */
+
+.deck-fx-host { min-height: 0; }
+.fx-pane {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: var(--panel-2, #1c212c);
+  border: 1px solid rgba(255,255,255,.06);
+}
+.fx-title {
+  font: 700 10px/1 -apple-system, sans-serif;
+  letter-spacing: .14em;
+  color: var(--accent, #ffb340);
+}
+.fx-select {
+  min-width: 0;
+  padding: 5px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: var(--panel-3, #232a38);
+  color: var(--text, #e8ecf4);
+  font: 600 11px/1 -apple-system, sans-serif;
+  cursor: pointer;
+}
+.fx-knob-wrap {
+  display: grid; justify-items: center; gap: 2px;
+}
+.fx-knob {
+  position: relative;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #39404f, #1a1f2a);
+  border: 1px solid rgba(255,255,255,.14);
+  cursor: ns-resize;
+  touch-action: none;
+}
+.fx-knob-pointer {
+  position: absolute; inset: 0;
+  transform-origin: center;
+}
+.fx-knob-pointer::before {
+  content: '';
+  position: absolute; top: 2px; left: 50%;
+  width: 2px; height: 8px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--accent, #ffb340);
+}
+.fx-knob-label {
+  font: 700 7px/1 -apple-system, sans-serif;
+  letter-spacing: .1em;
+  color: var(--text-dim, #8b93a5);
+}
+.fx-on-btn {
+  padding: 7px 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 7px;
+  background: var(--panel-3, #232a38);
+  color: var(--text-dim, #8b93a5);
+  font: 700 11px/1 -apple-system, sans-serif;
+  cursor: pointer;
+  transition: transform .05s, background .1s, color .1s, box-shadow .1s;
+}
+.fx-on-btn:active { transform: scale(.94); }
+.fx-on-btn.active {
+  background: var(--accent, #ffb340); border-color: var(--accent, #ffb340);
+  color: #0d0f14;
+  box-shadow: 0 0 12px var(--accent-dim, rgba(255,179,64,.18));
+}
+.fx-unavailable { opacity: .4; pointer-events: none; }
+
+/* ─── Sampler pane ──────────────────────────────────────────── */
+
+.sampler-pane {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 6px;
+  padding: 8px 10px;
+}
+.sampler-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.sampler-bank-wrap { margin-left: auto; }
+.sampler-bank {
+  padding: 5px 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-dim, #8b93a5);
+  font: 700 10px/1 -apple-system, sans-serif;
+  letter-spacing: .1em;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.sampler-bank:hover { color: var(--text, #e8ecf4); border-color: rgba(255,255,255,.34); }
+.sampler-bank.alt {
+  border-color: var(--accent, #ffb340);
+  color: var(--accent, #ffb340);
+  background: rgba(255,179,64,.12);
+}
+.sampler-title {
+  font: 700 10px/1 -apple-system, sans-serif;
+  letter-spacing: .14em;
+  color: var(--text-dim, #8b93a5);
+}
+.sampler-rec {
+  padding: 5px 14px;
+  border: 1px solid rgba(255,68,51,.4);
+  border-radius: 999px;
+  background: transparent;
+  color: #ff4433;
+  font: 700 10px/1 -apple-system, sans-serif;
+  letter-spacing: .1em;
+  cursor: pointer;
+  transition: background .15s, color .15s, box-shadow .15s;
+}
+.sampler-rec.recording {
+  background: #ff4433; color: #fff;
+  box-shadow: 0 0 14px rgba(255,68,51,.6);
+  animation: recPulse 1.2s ease-in-out infinite;
+}
+@keyframes recPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255,68,51,.4); }
+  50% { box-shadow: 0 0 20px rgba(255,68,51,.85); }
+}
+.sampler-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 5px;
+  min-height: 0;
+}
+.sampler-pad-wrap { display: contents; }
+.sampler-pad {
+  display: grid; place-items: center; gap: 1px;
+  padding: 6px 0;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 7px;
+  background: var(--panel-2, #1c212c);
+  cursor: pointer;
+  transition: transform .04s;
+}
+.sampler-pad:active { transform: scale(.94); }
+.sampler-pad-num {
+  font: 700 11px/1 "SF Mono", ui-monospace, monospace;
+  color: var(--accent, #ffb340);
+}
+.sampler-pad-name {
+  font: 600 7px/1 -apple-system, sans-serif;
+  letter-spacing: .08em;
+  color: var(--text-dim, #8b93a5);
+}
+.sampler-pad.hit {
+  animation: padHit .25s ease-out;
+}
+@keyframes padHit {
+  0% { background: var(--accent, #ffb340); box-shadow: 0 0 16px var(--accent, #ffb340); }
+  100% { background: var(--panel-2, #1c212c); box-shadow: none; }
+}
+
+/* ─── Bloqueo docente (LevelManager) ────────────────────────── */
+
+.deck-pane .locked,
+.sampler-pane .locked,
+.locked .deck-btn, .locked .deck-hotcue, .locked .deck-loop-btn,
+.locked .fx-knob, .locked .fx-on-btn, .locked .fx-select,
+.locked .sampler-pad, .locked .sampler-rec, .locked .sampler-bank,
+.locked .deck-pitch-track, .locked .deck-jog {
+  opacity: .35;
+  cursor: not-allowed !important;
+  filter: grayscale(.7);
+}

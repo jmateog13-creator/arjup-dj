@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arjup DJ</title>
+  <link rel="icon" type="image/png" href="assets/brand/favicon.png">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/mixer.css">
+</head>
+<body>
+
+  <!-- ══ HEADER ══ -->
+  <header id="app-header">
+    <div class="brand">
+      <span class="brand-logo" aria-hidden="true"></span>
+      <h1>ARJUP&nbsp;<span class="brand-dj">DJ</span></h1>
+    </div>
+
+    <div class="header-right">
+      <button id="midi-btn" title="MIDI Learn" aria-pressed="false">MIDI</button>
+    </div>
+  </header>
+
+  <!-- ══ WAVEFORM STRIPS (A sobre B, playhead central fijo) ══ -->
+  <section id="waveform-section" aria-label="Rhythm waves">
+    <canvas id="waveform-strip"></canvas>
+  </section>
+
+  <!-- ══ FILA CENTRAL: DECK A · MIXER · DECK B ══ -->
+  <main id="console-row">
+    <section id="deck-a" class="deck" data-deck="a" aria-label="Deck A"></section>
+
+    <section id="mixer-column" aria-label="Mixer">
+      <div id="mixer"></div>
+      <div id="sampler-pane"></div>
+    </section>
+
+    <section id="deck-b" class="deck" data-deck="b" aria-label="Deck B"></section>
+  </main>
+
+  <!-- ══ BROWSER ══ -->
+  <section id="browser" aria-label="Browser"></section>
+
+  <!-- ══ ENTRADA: landing → app ══ -->
+  <div id="audio-overlay">
+
+    <!-- Vista 1 · LANDING -->
+    <div class="start-view" id="start-landing">
+      <div class="audio-overlay-card">
+        <div class="audio-overlay-logo" aria-hidden="true">
+          <img src="assets/brand/arjup-logo.png" alt="" width="104" height="131">
+        </div>
+        <h2 data-i18n="overlay.title">Arjup DJ</h2>
+        <p data-i18n="overlay.subtitle">La teva taula de mescles, a punt per sonar.</p>
+        <button id="start-btn" data-i18n="overlay.start">Comença</button>
+        <p class="audio-overlay-hint" data-i18n="overlay.hint">Cal un clic perquè el navegador permeti l'àudio.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

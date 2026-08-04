@@ -1,0 +1,432 @@
+/* ═══════════════════════════════════════════════════════════════
+   AULATECH DJ · app.css — layout general, tema, vistas
+   Owner: UI-SHELL. Variables del contrato §8.
+   decks.css / mixer.css estilizan los interiores de sus panes.
+═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Contrato §8 ── */
+  --deck-a:  #38aaff;
+  --deck-b:  #ff4433;
+  --bg:      #0d0f14;
+  --panel:   #161a22;
+  --accent:  #ffb340;
+
+  /* ── Derivadas (tema Apple-style dark) ── */
+  --panel-2:      #1c212c;
+  --panel-3:      #232a38;
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-hi:    rgba(255, 255, 255, 0.16);
+  --text:         #f2f4f8;
+  --text-dim:     #8b93a3;
+  --text-faint:   #565e6e;
+  --deck-a-dim:   rgba(56, 170, 255, 0.18);
+  --deck-b-dim:   rgba(255, 68, 51, 0.18);
+  --accent-dim:   rgba(255, 179, 64, 0.18);
+  --ok:           #34d399;
+  --danger:       #ff453a;
+  --radius:       10px;
+  --radius-sm:    6px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+          "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, Menlo, Monaco, "Cascadia Mono", monospace;
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  --glass: rgba(22, 26, 34, 0.72);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-user-select: none;
+
+  /* ── Grid maestro del layout §8 ── */
+  display: grid;
+  grid-template-rows: 44px 12vh minmax(0, 1fr) 25vh;
+  grid-template-columns: 100%;
+  height: 100vh;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+canvas { display: block; }
+
+/* ═══ HEADER ═══ */
+
+#app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 14px;
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border-bottom: 1px solid var(--border);
+  z-index: 20;
+}
+
+.brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+
+.brand-logo {
+  width: 30px; height: 26px;
+  background: url('../assets/brand/arjup-icon.png') center/contain no-repeat;
+  /* el logo és negre i blanc: sobre el header fosc necessita separació */
+  filter: drop-shadow(0 0 3px rgba(0,0,0,.9));
+}
+
+.brand h1 {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+
+.brand-dj { color: var(--accent); }
+
+/* ── Mode selector (segmented control estilo Apple) ── */
+
+#mode-selector {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.mode-btn {
+  padding: 4px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mode-btn:hover { color: var(--text); }
+
+.mode-btn.active {
+  background: var(--panel-3);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--border-hi), 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+#midi-btn {
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-hi);
+  background: var(--panel-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  transition: all 0.15s ease;
+}
+
+#midi-btn:hover { color: var(--text); border-color: var(--accent); }
+
+#midi-btn.learning,
+#midi-btn[aria-pressed="true"] {
+  color: #000;
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-dim);
+  animation: midi-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes midi-pulse {
+  50% { box-shadow: 0 0 20px var(--accent); }
+}
+
+/* ═══ WAVEFORM STRIPS ═══ */
+
+#waveform-section {
+  position: relative;
+  background: #090b0f;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+#waveform-strip { width: 100%; height: 100%; }
+
+/* ═══ FILA CENTRAL: DECK A · MIXER · DECK B ═══ */
+
+#console-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr) minmax(0, 1fr);
+  gap: 1px;
+  background: var(--border);
+  min-height: 0;
+}
+
+#console-row > section {
+  background: var(--panel);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.deck[data-deck="a"] { box-shadow: inset 0 3px 0 var(--deck-a); }
+.deck[data-deck="b"] { box-shadow: inset 0 3px 0 var(--deck-b); }
+
+#mixer-column {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;
+}
+
+#mixer { min-height: 0; overflow: hidden; }
+
+#sampler-pane {
+  border-top: 1px solid var(--border);
+  background: var(--panel-2);
+}
+
+/* ═══ BROWSER ═══ */
+
+#browser {
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══ HOOKS DOCENTES (LevelManager via ModesFacade) ═══ */
+
+/* Control bloqueado por la política de la lección */
+.locked {
+  pointer-events: none !important;
+  opacity: 0.32;
+  filter: saturate(0.25);
+  position: relative;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.locked::after {
+  content: "";
+  position: absolute;
+  top: 3px; right: 3px;
+  width: 12px; height: 12px;
+  background: var(--text-faint);
+  /* Candado SF-style dibujado con mask */
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1a4 4 0 0 0-4 4v2H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-1V5a4 4 0 0 0-4-4zm-2.5 6V5a2.5 2.5 0 0 1 5 0v2z"/></svg>') no-repeat center / contain;
+          mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1a4 4 0 0 0-4 4v2H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-1V5a4 4 0 0 0-4-4zm-2.5 6V5a2.5 2.5 0 0 1 5 0v2z"/></svg>') no-repeat center / contain;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Aro pulsante de misión (highlightControl) */
+.mission-highlight {
+  position: relative;
+  z-index: 6;
+  border-radius: var(--radius-sm);
+  animation: mission-ring 1.4s ease-in-out infinite;
+}
+
+@keyframes mission-ring {
+  0%, 100% {
+    box-shadow: 0 0 0 2px var(--accent), 0 0 8px 2px var(--accent-dim);
+  }
+  50% {
+    box-shadow: 0 0 0 3px var(--accent), 0 0 22px 6px var(--accent-dim);
+  }
+}
+
+/* ═══ OVERLAY DOCENTE (contenedor; ModesFacade pinta dentro) ═══ */
+
+#modes-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none; /* la façade activa pointer-events en sus hijos */
+}
+
+#modes-overlay[hidden] { display: none; }
+
+/* ═══ OVERLAY INICIAL "Activa el so" ═══ */
+
+#audio-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(9, 11, 15, 0.82);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  opacity: 1;
+  transition: opacity 0.45s ease;
+}
+
+#audio-overlay.closing { opacity: 0; pointer-events: none; }
+#audio-overlay[hidden] { display: none; }
+
+/* ── Entrada en dues vistes: landing · selector de mode ── */
+.start-view {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.start-view[hidden] { display: none; }
+#start-modes.busy { opacity: 0.5; pointer-events: none; }
+
+.audio-overlay-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 42px 56px;
+  background: var(--glass);
+  border: 1px solid var(--border-hi);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+/* el logo antic era un disc: girava. Un pato girant, no — sura. */
+.audio-overlay-logo { animation: overlay-float 3.4s ease-in-out infinite; }
+/* el logo porta text negre (pensat per a fons clar): sobre fosc cal halo */
+.audio-overlay-logo img {
+  display: block;
+  filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 4px rgba(255,255,255,.75));
+}
+
+@keyframes overlay-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audio-overlay-logo { animation: none; }
+}
+
+.audio-overlay-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.audio-overlay-card p { color: var(--text-dim); font-size: 14px; }
+
+#start-btn {
+  margin-top: 14px;
+  padding: 12px 40px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  background: linear-gradient(180deg, #ffc86b, var(--accent));
+  box-shadow: 0 0 24px var(--accent-dim), 0 4px 14px rgba(0, 0, 0, 0.5);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+#start-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 36px var(--accent-dim), 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+#start-btn:active { transform: scale(0.98); }
+
+.audio-overlay-hint { font-size: 11px !important; color: var(--text-faint) !important; }
+
+/* ═══ SELECTOR DE MODE (vista 2 dins de #audio-overlay) ═══ */
+
+.mode-overlay-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 24px;
+  text-align: center;
+  max-width: 920px;
+}
+.mode-overlay-inner h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.mode-overlay-sub { color: var(--text-dim); font-size: 14px; margin-bottom: 22px; }
+
+.mode-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+
+.mode-card {
+  appearance: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 30px 22px;
+  border-radius: 20px;
+  background: var(--glass);
+  border: 1px solid var(--border-hi);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  text-align: center;
+  transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+}
+.mode-card:hover {
+  transform: translateY(-6px);
+  background: var(--panel-2, #1c212c);
+}
+.mode-card:active { transform: translateY(-2px) scale(0.99); }
+.mode-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.mode-card-ico {
+  font-size: 40px;
+  line-height: 1;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4));
+}
+.mode-card-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.mode-card-desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.45; }
+
+.mode-card-academia:hover  { border-color: var(--accent, #ffb340); box-shadow: 0 12px 34px rgba(0,0,0,.5), 0 0 22px var(--accent-dim, rgba(255,179,64,.3)); }
+.mode-card-laboratori:hover { border-color: var(--deck-b, #ff4433); box-shadow: 0 12px 34px rgba(0,0,0,.5), 0 0 22px var(--deck-b-dim, rgba(255,68,51,.3)); }
+.mode-card-sandbox:hover    { border-color: var(--deck-a, #38aaff); box-shadow: 0 12px 34px rgba(0,0,0,.5), 0 0 22px var(--deck-a-dim, rgba(56,170,255,.3)); }
+.mode-card-academia  .mode-card-ico { color: var(--accent, #ffb340); }
+
+@media (max-width: 720px) {
+  .mode-cards { grid-template-columns: 1fr; gap: 12px; }
+  .mode-card { flex-direction: row; text-align: left; padding: 18px 20px; gap: 16px; }
+  .mode-card-ico { font-size: 30px; }
+  .mode-card-desc { display: none; }
+}
+
+/* ═══ UTILIDADES COMPARTIDAS ═══ */
+
+.hidden { display: none !important; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--panel-3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-hi); }
+::-webkit-scrollbar-track { background: transparent; }

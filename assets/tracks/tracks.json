@@ -1,0 +1,74 @@
+[
+  {
+    "file": "neo_124.m4a",
+    "title": "Neó",
+    "artist": "Aulatech",
+    "bpm": 124,
+    "key": "Am",
+    "firstBeat": 0,
+    "duration": 94.403
+  },
+  {
+    "file": "vespre_126.m4a",
+    "title": "Vespre",
+    "artist": "Aulatech",
+    "bpm": 126,
+    "key": "Am",
+    "firstBeat": 0,
+    "duration": 92.929
+  },
+  {
+    "file": "baixfondo_100.m4a",
+    "title": "Baix Fondo",
+    "artist": "Aulatech",
+    "bpm": 100,
+    "key": "Dm",
+    "firstBeat": 0,
+    "duration": 116.7
+  },
+  {
+    "file": "marea_102.m4a",
+    "title": "Marea",
+    "artist": "Aulatech",
+    "bpm": 102,
+    "key": "Dm",
+    "firstBeat": 0,
+    "duration": 114.441
+  },
+  {
+    "file": "pols_140.m4a",
+    "title": "Pols",
+    "artist": "Aulatech",
+    "bpm": 140,
+    "key": "Em",
+    "firstBeat": 0,
+    "duration": 83.786
+  },
+  {
+    "file": "vertigen_142.m4a",
+    "title": "Vertigen",
+    "artist": "Aulatech",
+    "bpm": 142,
+    "key": "Em",
+    "firstBeat": 0,
+    "duration": 82.627
+  },
+  {
+    "file": "capvespre_87.m4a",
+    "title": "Capvespre",
+    "artist": "Aulatech",
+    "bpm": 87,
+    "key": "Gm",
+    "firstBeat": 0,
+    "duration": 133.914
+  },
+  {
+    "file": "alba_89.m4a",
+    "title": "Alba",
+    "artist": "Aulatech",
+    "bpm": 89,
+    "key": "Gm",
+    "firstBeat": 0,
+    "duration": 130.938
+  }
+]
