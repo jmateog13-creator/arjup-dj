@@ -24,6 +24,10 @@ para que los ES modules no se queden stale durante el desarrollo):
 `python3 serve_nocache.py 8133`. Requiere servidor (ES modules + AudioWorklets);
 abrir `index.html` con `file://` no funciona.
 
+**Atajo:** doble clic en `Arjup DJ.command` (Finder) arranca el servidor en el puerto
+8151 y abre la mesa en el navegador. Si ya está servido, solo abre la pestaña. Cerrar
+la ventana de Terminal para la app.
+
 ## Los 3 modos
 
 - **ACADÈMIA** — 8 lliçons guiadas (de "La taula i el deck" a "FX i la transició
