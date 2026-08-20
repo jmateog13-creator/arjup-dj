@@ -1,0 +1,27 @@
+{
+  "name": "arjup-dj",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mesa de DJ de doble deck per a l'aula (Suite Aulatech)",
+  "license": "UNLICENSED",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^43.4.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "cat.aulatech.arjupdj",
+    "productName": "Arjup DJ",
+    "directories": { "output": "dist", "buildResources": "electron/build" },
+    "files": ["electron/**", "index.html", "css/**", "js/**", "assets/**"],
+    "mac": { "target": "dmg", "category": "public.app-category.music" },
+    "win": { "target": "nsis" },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "perMachine": false }
+  }
+}

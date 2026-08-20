@@ -61,6 +61,18 @@
 
   </div>
 
+  <!-- Sense servidor (file://) els ES modules i els AudioWorklets no carreguen:
+       avisem a la landing en comptes de fallar en silenci. -->
+  <script>
+    if (location.protocol === 'file:') {
+      document.getElementById('start-btn').disabled = true;
+      document.querySelector('#start-landing p[data-i18n="overlay.subtitle"]').textContent =
+        'Cal servidor: fes doble clic a «Arjup DJ.command».';
+      document.querySelector('.audio-overlay-hint').textContent =
+        'Obrir index.html directament (file://) no funciona.';
+    }
+  </script>
+
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

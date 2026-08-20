@@ -24,9 +24,30 @@ para que los ES modules no se queden stale durante el desarrollo):
 `python3 serve_nocache.py 8133`. Requiere servidor (ES modules + AudioWorklets);
 abrir `index.html` con `file://` no funciona.
 
-**Atajo:** doble clic en `Arjup DJ.command` (Finder) arranca el servidor en el puerto
-8151 y abre la mesa en el navegador. Si ya está servido, solo abre la pestaña. Cerrar
-la ventana de Terminal para la app.
+**Atajo (macOS):** doble clic en `Arjup DJ.command` (Finder) arranca el servidor en el
+puerto 8151 y abre la mesa en el navegador. Si ya está servido, solo abre la pestaña.
+Cerrar la ventana de Terminal para la app.
+
+## App de escritorio (Windows / macOS)
+
+Para el aula hay una versión empaquetada con Electron: doble clic al icono, sin
+navegador, sin Python, sin servidor. La mesa se sirve por un esquema propio
+(`arjup://`) porque Chromium bloquea ES modules y AudioWorklets sobre `file://`.
+
+```bash
+npm install          # una vez
+npm start            # abrir la app en desarrollo
+ARJUP_SMOKE=1 npm start   # check: arranca, carga el motor y sale (SMOKE OK / FAIL)
+npm run dist:mac     # .dmg  (solo desde macOS)
+npm run dist:win     # .exe  (solo desde Windows)
+```
+
+Los instaladores de las dos plataformas se compilan en CI: pestaña **Actions →
+Desktop installers → Run workflow**, o empujando un tag `v*`. Los `.dmg` / `.exe`
+quedan como artifacts del run.
+
+Sin firma digital: Windows mostrará el aviso de SmartScreen ("Más información →
+Ejecutar de todas formas") y macOS pedirá abrir con clic derecho la primera vez.
 
 ## Los 3 modos
 
